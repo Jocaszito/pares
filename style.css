@@ -1,45 +1,165 @@
+/* Estilo geral */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+  }
+  
+  /* Cabeçalho */
+  header {
     text-align: center;
-    background-color: #f3f3f3;
+    margin-bottom: 20px;
   }
   
   h1 {
-    color: #333;
+    font-size: 2.5rem;
+    color: #4caf50;
+    margin-bottom: 10px;
   }
   
-  .game-board {
-    display: grid;
-    grid-template-columns: repeat(4, 100px);
-    gap: 10px;
-    justify-content: center;
-    margin-top: 20px;
+  #status {
+    font-size: 1.2rem;
+    color: #555;
   }
   
+  /* Estilo das cartas */
   .card {
     width: 100px;
     height: 100px;
-    background-color: #4caf50;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    color: white;
+    margin: 10px;
+    perspective: 1000px;
+    display: inline-block;
     cursor: pointer;
-    border-radius: 8px;
-    transform: scale(1);
-    transition: transform 0.2s;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
   }
   
-  .card.flipped {
-    background-color: #fff;
+  .card .inner {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease;
+    border-radius: 10px;
+  }
+  
+  .card.flipped .inner {
+    transform: rotateY(180deg);
+  }
+  
+  .card .front, .card .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 10px;
+  }
+  
+  .card .front {
+    background-color: #ffffff;
     color: #333;
-    cursor: default;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
-  .card.matched {
-    background-color: #76c7c0;
-    color: #fff;
-    cursor: default;
+  .card .back {
+    background-color: #4caf50;
+    color: white;
+    transform: rotateY(180deg);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Cartas combinadas */
+  .card.matched .inner {
+    background-color: #66bb6a;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Tela de vitória */
+  #win-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 30px 40px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  #win-message h2 {
+    margin: 0 0 10px;
+    font-size: 2rem;
+    color: #ffeb3b;
+  }
+  
+  #win-message p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  
+  #win-message button {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  #win-message button:hover {
+    background-color: #388e3c;
+  }
+  
+  #win-message button:focus {
+    outline: none;
+  }
+  
+  /* Estilo do tabuleiro */
+  .game-board {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px;
+    justify-content: center;
+    margin-top: 50px;
+  }
+  
+  /* Adicionando sombra nas cartas */
+  .card {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card:hover {
+    transform: scale(1.1);
+  }
+  
+  /* Visibilidade da tela de vitória */
+  .hidden {
+    display: none;
   }
   
