@@ -1,4 +1,4 @@
-v// script.js
+// script.js
 
 const cardsContainer = document.getElementById('cards-container');
 const congratulations = document.getElementById('congratulations');
