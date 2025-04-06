@@ -1,79 +1,41 @@
-/* style.css */
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Arial', sans-serif;
-}
-
 body {
-    background-color: #f0f4f8;
+    font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     height: 100vh;
+    background-color: #ffe0e6;
 }
 
-.container {
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    width: 90%;
-    max-width: 600px;
-    text-align: center;
+h1 {
+    color: #d63384;
 }
 
-.cards-container {
+.game-board {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 100px);
     gap: 10px;
-    padding: 20px;
 }
 
 .card {
-    width: 100%;
+    width: 100px;
     height: 100px;
-    border-radius: 10px;
-    background-color: #6a11cb;
-    color: white;
+    font-size: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2em;
+    background-color: white;
+    border: 2px solid #d63384;
     cursor: pointer;
     transition: transform 0.3s;
 }
 
-.card.flipped {
-    background-color: #2575fc;
+.card:hover {
+    transform: scale(1.1);
 }
 
-.form-container {
-    padding: 20px;
-}
-
-button {
-    padding: 10px;
-    background-color: #6a11cb;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #2575fc;
-}
-
-.congratulations {
-    margin-top: 20px;
-}
-
-.flower {
-    width: 100px;
-    height: auto;
+.hidden {
+    background-color: #d63384;
+    color: transparent;
 }
