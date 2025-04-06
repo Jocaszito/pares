@@ -1,90 +1,73 @@
-const symbols = ["🍎", "🍌", "🍇", "🍒", "🥝", "🍓", "🍍", "🍑", "🥭", "🍉", "🍏", "🍋"];
-const gameBoard = document.getElementById("game-board");
-const winMessage = document.getElementById("win-message");
-let firstCard = null;
-let secondCard = null;
-let matches = 0;
-const totalPairs = 12; // Número de pares de cartas
+v// script.js
 
-// Inicializar o jogo
-function initializeGame() {
-  const selectedSymbols = symbols.slice(0, totalPairs);
-  const shuffledSymbols = shuffle([...selectedSymbols, ...selectedSymbols]);
+const cardsContainer = document.getElementById('cards-container');
+const congratulations = document.getElementById('congratulations');
+const restartButton = document.getElementById('restart-button');
 
-  gameBoard.innerHTML = ""; // Limpar o tabuleiro
+let cardValues = ['A', 'A', 'B', 'B', 'C', 'C', 'D', 'D', 'E', 'E', 'F', 'F', 'G', 'G', 'H', 'H'];
+let flippedCards = [];
+let matchedCards = 0;
 
-  shuffledSymbols.forEach((symbol) => {
-    const card = document.createElement("div");
-    card.classList.add("card");
-    card.innerHTML = `
-      <div class="inner">
-        <div class="front">?</div>
-        <div class="back">${symbol}</div>
-      </div>
-    `;
-    card.addEventListener("click", handleCardClick);
-    gameBoard.appendChild(card);
-  });
-}
-
-// Embaralhar os símbolos
 function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
-}
-
-// Lidar com o clique nas cartas
-function handleCardClick(event) {
-  const card = event.currentTarget;
-
-  if (card.classList.contains("flipped") || secondCard) return;
-
-  card.classList.add("flipped");
-
-  if (!firstCard) {
-    firstCard = card;
-  } else {
-    secondCard = card;
-
-    const firstSymbol = firstCard.querySelector(".back").textContent;
-    const secondSymbol = secondCard.querySelector(".back").textContent;
-
-    if (firstSymbol === secondSymbol) {
-      firstCard.classList.add("matched");
-      secondCard.classList.add("matched");
-      matches++;
-      resetCards();
-
-      // Verificar se todos os pares foram encontrados
-      if (matches === totalPairs) {
-        showWinMessage();
-      }
-    } else {
-      setTimeout(() => {
-        firstCard.classList.remove("flipped");
-        secondCard.classList.remove("flipped");
-        resetCards();
-      }, 1000);
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
     }
-  }
+    return array;
 }
 
-// Resetar as cartas
-function resetCards() {
-  firstCard = null;
-  secondCard = null;
+function createCards() {
+    cardsContainer.innerHTML = '';
+    const shuffledCards = shuffle(cardValues);
+    shuffledCards.forEach(value => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.dataset.value = value;
+        card.innerText = '?';
+        card.addEventListener('click', flipCard);
+        cardsContainer.appendChild(card);
+    });
 }
 
-// Exibir a tela de vitória
-function showWinMessage() {
-  winMessage.classList.remove("hidden"); // Mostrar a tela de vitória
+function flipCard() {
+    if (flippedCards.length < 2 && !this.classList.contains('flipped')) {
+        this.classList.add('flipped');
+        this.innerText = this.dataset.value;
+        flippedCards.push(this);
+
+        if (flippedCards.length === 2) {
+            setTimeout(checkMatch, 1000);
+        }
+    }
 }
 
-// Reiniciar o jogo
+function checkMatch() {
+    const [firstCard, secondCard] = flippedCards;
+
+    if (firstCard.dataset.value === secondCard.dataset.value) {
+        matchedCards += 2;
+        if (matchedCards === cardValues.length) {
+            showCongratulations();
+        }
+    } else {
+        firstCard.classList.remove('flipped');
+        firstCard.innerText = '?';
+        secondCard.classList.remove('flipped');
+        secondCard.innerText = '?';
+    }
+    flippedCards = [];
+}
+
+function showCongratulations() {
+    congratulations.style.display = 'block';
+}
+
 function restartGame() {
-  matches = 0;
-  winMessage.classList.add("hidden");
-  initializeGame();
+    matchedCards = 0;
+    flippedCards = [];
+    congratulations.style.display = 'none';
+    createCards();
 }
 
-// Iniciar o jogo
-initializeGame();
+// Inicia o jogo ao carregar a página
+createCards();
