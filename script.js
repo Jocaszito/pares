@@ -1,73 +1,56 @@
-// script.js
-
-const cardsContainer = document.getElementById('cards-container');
-const congratulations = document.getElementById('congratulations');
-const restartButton = document.getElementById('restart-button');
-
-let cardValues = ['A', 'A', 'B', 'B', 'C', 'C', 'D', 'D', 'E', 'E', 'F', 'F', 'G', 'G', 'H', 'H'];
-let flippedCards = [];
-let matchedCards = 0;
+const emojis = ["💖", "💍", "🍫", "🌹", "💑", "💌", "🎶", "🍷"];
+let gameArray = [...emojis, ...emojis]; // Duplicando para formar pares
+let firstCard, secondCard;
+let lockBoard = false;
 
 function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
+    array.sort(() => Math.random() - 0.5);
 }
 
-function createCards() {
-    cardsContainer.innerHTML = '';
-    const shuffledCards = shuffle(cardValues);
-    shuffledCards.forEach(value => {
-        const card = document.createElement('div');
-        card.classList.add('card');
-        card.dataset.value = value;
-        card.innerText = '?';
-        card.addEventListener('click', flipCard);
-        cardsContainer.appendChild(card);
+function createBoard() {
+    shuffle(gameArray);
+    const board = document.getElementById("gameBoard");
+    gameArray.forEach((emoji) => {
+        const card = document.createElement("div");
+        card.classList.add("card", "hidden");
+        card.dataset.emoji = emoji;
+        card.innerText = emoji;
+        card.addEventListener("click", flipCard);
+        board.appendChild(card);
     });
 }
 
 function flipCard() {
-    if (flippedCards.length < 2 && !this.classList.contains('flipped')) {
-        this.classList.add('flipped');
-        this.innerText = this.dataset.value;
-        flippedCards.push(this);
+    if (lockBoard || this === firstCard) return;
 
-        if (flippedCards.length === 2) {
-            setTimeout(checkMatch, 1000);
-        }
+    this.classList.remove("hidden");
+
+    if (!firstCard) {
+        firstCard = this;
+        return;
     }
+
+    secondCard = this;
+    checkMatch();
 }
 
 function checkMatch() {
-    const [firstCard, secondCard] = flippedCards;
-
-    if (firstCard.dataset.value === secondCard.dataset.value) {
-        matchedCards += 2;
-        if (matchedCards === cardValues.length) {
-            showCongratulations();
-        }
+    lockBoard = true;
+    if (firstCard.dataset.emoji === secondCard.dataset.emoji) {
+        resetBoard();
     } else {
-        firstCard.classList.remove('flipped');
-        firstCard.innerText = '?';
-        secondCard.classList.remove('flipped');
-        secondCard.innerText = '?';
+        setTimeout(() => {
+            firstCard.classList.add("hidden");
+            secondCard.classList.add("hidden");
+            resetBoard();
+        }, 1000);
     }
-    flippedCards = [];
 }
 
-function showCongratulations() {
-    congratulations.style.display = 'block';
+function resetBoard() {
+    firstCard = null;
+    secondCard = null;
+    lockBoard = false;
 }
 
-function restartGame() {
-    matchedCards = 0;
-    flippedCards = [];
-    congratulations.style.display = 'none';
-    createCards();
-}
-
-// Inicia o jogo ao carregar a página
-createCards();
+createBoard();
