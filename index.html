@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jogo da Memória</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Memória</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Jogo da Memória</h1>
-    <p id="status">Encontre todos os pares de cartas!</p>
-  </header>
-  <div id="game-board" class="game-board"></div>
-  <div id="win-message" class="hidden">
-    <h2>Parabéns!</h2>
-    <p>Você encontrou todos os pares!</p>
-    <button onclick="restartGame()">Jogar Novamente</button>
-  </div>
-  <script src="script.js"></script>
+    <div class="container">
+        <h1>Jogo da Memória</h1>
+        <div class="cards-container" id="cards-container"></div>
+        <div class="form-container">
+            <button id="restart-button" onclick="restartGame()">Reiniciar Jogo</button>
+        </div>
+        <div class="congratulations" id="congratulations" style="display: none;">
+            <h2>Parabéns!</h2>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Pink_flower.svg/1200px-Pink_flower.svg.png" alt="Flor Rosa" class="flower">
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
